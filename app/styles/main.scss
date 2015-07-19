@@ -1,0 +1,30 @@
+// bower:scss
+// endbower
+
+body {
+  background: #fafafa;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+}
+
+.container {
+  width: 100%;
+  #map {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 400px;
+    
+    .pin_profile-pic {
+      border-radius: 100px;
+      width: 52px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+  #legend {
+    background: white;
+    padding: 10px;
+    color: #000;
+  }
+}
