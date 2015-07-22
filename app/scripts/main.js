@@ -1,8 +1,13 @@
+"use strict"
+
 var app = {
     distance: 5000,
     lat: 52.236253,
     lng: 20.958109,
     count: 100,
+    //OAUTH2 under the Authentication - do poprawy?
+    client_id: 'db896e3e86384b62843853d0b5ecffe7',
+    //
     init: function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -15,7 +20,7 @@ var app = {
         } else {
             // Browser doesn't support Geolocation
             handleNoGeolocation(false);
-        } 
+        }
         function handleNoGeolocation(errorFlag) {
             if (errorFlag) {
                 var content = 'Error: The Geolocation service failed.';
@@ -37,12 +42,9 @@ var app = {
             //         }]
             //     }]
             // });
-			app.getData(app.lat, app.lng);
+            app.getData(app.lat, app.lng);
         }
-        // this.createMap();
     },
-    //OAUTH2 under the Authentication - do poprawy?
-    client_id: 'db896e3e86384b62843853d0b5ecffe7',
     getData: function(posLat, posLng) {
         $.ajax({
             //dodanie walidacji statusu, ponawianie getData();
@@ -57,7 +59,7 @@ var app = {
         });
     },
     createMap: function(callback, posLat, posLng) {
-    	//remove geo checker
+        //remove geo checker
         // if (navigator.geolocation) {
             // navigator.geolocation.getCurrentPosition(function(position) {
                 var map = new google.maps.Map(document.getElementById('map'), {
@@ -69,13 +71,13 @@ var app = {
                         "featureType": "water",
                         "elementType": "geometry",
                         "stylers": [{
-                        	"color": "#2D333C"
+                            "color": "#2D333C"
                         }]
                     }]
                 });
                 //Rysuje radar - 5km
                 var draw_radar = new google.maps.Circle({
-                	strokeColor: '#FF0000',
+                    strokeColor: '#FF0000',
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
                     fillColor: '#FF0000',
@@ -87,9 +89,9 @@ var app = {
                 map.setZoom(12);
                 //
                 for (var i = 0; i < callback.length; i++) {  
-                	//
+                    //
                     var icon_options = new google.maps.MarkerImage(
-                    callback[i].user.profile_picture,
+                        callback[i].user.profile_picture,
                         null, //size (e.x spirit image)
                         null, //origin
                         null, //anchor
@@ -98,41 +100,41 @@ var app = {
                     var marker = new google.maps.Marker({
                         animation: google.maps.Animation.DROP,
                         position: new google.maps.LatLng(callback[i].location.latitude, callback[i].location.longitude),
-                        map: map,
                         icon: icon_options,
+                        map: map,
                         zIndex: i,
                         opacity: 0.4,
                         title: callback[i].user.full_name ? callback[i].user.full_name : callback[i].user.username
                     });
-                    //
-					google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
-						return function() {
-						//
-							console.log('this', this.opacity);
-						}
-					})(marker, i));
-					google.maps.event.addListener(marker, 'click', (function(marker, i) {
-						return function() {
-							console.log('marker', callback[i]);
-							//rysowanie drogi
-							//obliczanie odleglosci i pokazanie tego nad droga/pinem whateve
-							//https://developers.google.com/maps/documentation/javascript/examples/distance-matrix
-							directionsDisplay.setMap(map);
-							calcRoute(marker.getPosition().A, marker.getPosition().F);
-							// request.destination = new google.maps.LatLng();
-							//
-							var pin_content = '<img class="pin_profile-pic" src='
-							+callback[i].user.profile_picture+
-							'>'+
-							'<p class="pin_profile-name">'+
-							callback[i].user.username
-							+'</p>'
-							+'<a href="'+callback[i].images.standard_resolution.url+'">link</a>';
-							//
-							infowindow.setContent(pin_content);
-							infowindow.open(map, marker);
-						}
-					})(marker, i));
+                    //events:
+                    google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+                        return function() {
+                        //Zmienia opacity, mouseleave - zeruje na default (0,4 opacity)
+                            console.log('this', this.opacity);
+                        }
+                    })(marker, i));
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            console.log('marker', callback[i].link);
+                            //rysowanie drogi
+                            //obliczanie odleglosci i pokazanie tego nad droga/pinem whateve
+                            //https://developers.google.com/maps/documentation/javascript/examples/distance-matrix
+                            // directionsDisplay.setMap(map);
+                            // calcRoute(marker.getPosition().A, marker.getPosition().F);
+                            // request.destination = new google.maps.LatLng();
+                            //
+                            // var pin_content = '<img class="pin_profile-pic" src='
+                            // +callback[i].user.profile_picture+
+                            // '>'+
+                            // '<p class="pin_profile-name">'+
+                            // callback[i].user.username
+                            // +'</p>'
+                            // +'<a href="'+callback[i].images.standard_resolution.url+'">link</a>';
+                            //
+                            // infowindow.setContent(pin_content);
+                            // infowindow.open(map, marker);
+                        }
+                    })(marker, i));
                 }
                 // Marker pozycyjny
                 var pos_marker = new google.maps.Marker({
@@ -142,37 +144,42 @@ var app = {
                     draggable: true
                 });
                 var pos_marker_infowindow = new google.maps.InfoWindow({
-                	content: 'You are here',
-					shadowStyle: 1,
-					padding: 0,
-					backgroundColor: 'rgb(57,57,57)',
-					borderRadius: 5,
-					arrowSize: 10,
-					borderWidth: 1,
-					borderColor: '#2c2c2c',
-					disableAutoPan: true,
-					hideCloseButton: true,
-					arrowPosition: 30,
-					backgroundClassName: 'transparent',
-					arrowStyle: 2
+                    content: 'You are here',
+                    shadowStyle: 1,
+                    padding: 0,
+                    backgroundColor: 'rgb(57,57,57)',
+                    borderRadius: 5,
+                    arrowSize: 10,
+                    borderWidth: 1,
+                    borderColor: '#2c2c2c',
+                    disableAutoPan: true,
+                    hideCloseButton: true,
+                    arrowPosition: 30,
+                    backgroundClassName: 'transparent',
+                    arrowStyle: 2
                 });
                 pos_marker_infowindow.open(map, pos_marker);
+                google.maps.event.addListener(pos_marker, 'dragstart', function(event) {
+                    //clear all pins
+                    //
+                    //clear radar
+                    draw_radar.setMap(null);
+                });
                 google.maps.event.addListener(pos_marker, 'dragend', function(event) {
-                	var tmp_pos = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
-                	//radar option - distance 5km
-                	var tmp_radar = new google.maps.Circle({
-	                    strokeColor: '#FF0000',
-	                    strokeOpacity: 0.8,
-	                    strokeWeight: 2,
-	                    fillColor: '#FF0000',
-	                    fillOpacity: 0.1,
-	                    center: tmp_pos,
-	                    radius: Math.sqrt(app.distance) * 100
-	                });
-	                draw_radar.setMap(null);
-	                tmp_radar.setMap(null);
-	                tmp_radar.setMap(map);
-	                app.getData(event.latLng.lat(), event.latLng.lng())
+                    var tmp_pos = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+                    //radar option - distance 5km
+                    var tmp_radar = new google.maps.Circle({
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.1,
+                        center: tmp_pos,
+                        radius: Math.sqrt(app.distance) * 100
+                    });
+                    tmp_radar.setMap(null);
+                    tmp_radar.setMap(map);
+                    app.getData(event.latLng.lat(), event.latLng.lng())
                 });
             // }); 
         // }           
