@@ -5,6 +5,9 @@ body {
   background: #fafafa;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #333;
+  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
@@ -13,7 +16,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    height: 400px;
+    height: 100vh;
     
     .pin_profile-pic {
       border-radius: 100px;
@@ -27,4 +30,39 @@ body {
     padding: 10px;
     color: #000;
   }
+}
+#menu {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: #fff;
+  width: 320px;
+  box-shadow: 2px 0px 100px #333;
+  height: 100vh;
+  transform: translate(-400px,0px);
+  ul {
+    margin: 0;
+    max-width: 100%;
+    padding: 10px 10px;
+    li {
+      padding: 10px 5px;
+      list-style: none;
+      img {
+        height: 52px;
+        width: 52px;
+      }
+      h1 {
+        color: #eee;
+        font-size: 1.3em;
+        display: inline-block; 
+        vertical-align: top;
+      }
+    }
+    border-bottom: 1px solid #eee;
+  }
+}
+#navbar {
+  position: absolute;
+  left: 100px;
+  top: 20px;
 }
