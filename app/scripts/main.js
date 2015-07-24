@@ -24,6 +24,13 @@ var app = {
                 }]
             }]
         });
+        google.maps.event.addDomListener(window, "resize", function() {
+            //check rwd 
+            //console.log('window.size', window.innerWidth);
+            var center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(center); 
+        });
         //Rysuje radar - 5km
         var draw_radar = new google.maps.Circle({
             strokeColor: '#FF0000',
@@ -126,25 +133,17 @@ var app = {
         }
         var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
         function calcRoute(x, y) {
-            var selectedMode = 'DRIVING';
             var request = {
                 origin: new google.maps.LatLng(app.lat, app.lng),
                 destination: new google.maps.LatLng(x, y),
-                travelMode: google.maps.TravelMode[selectedMode]
+                travelMode: google.maps.TravelMode['DRIVING']
             };
-            var distance_popup = new google.maps.InfoWindow();
-            //
             directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
                     var get_distance = response.routes[0].legs[0].distance.value / 1000;
-                    console.log('distance in route', get_distance );
-                    //
-                    distance_popup.setMap(null);
-                    distance_popup.setContent( get_distance.toString() );
-                    //div pod inputem adresowym
-                    distance_popup.setPosition( new google.maps.LatLng(app.lat+ 0.0003, app.lng) )
-                    distance_popup.setMap(map);
+                    console.log('distance in route', get_distance + ' km');
+                    //dodaje dane do navbar div z data-attr
                 }
             });
         }

@@ -28,13 +28,24 @@
 		<div class="container">
 			<div id="map"></div>
 			<div id="navbar">
-				<div class="menu">
-					<i class="fa fa-menu"></i>
+				<div>
+					<i data-href="menu" title="Show menu" class="fa fa-bars fa-lg"></i>
+					<input type="text" id="get_adress">
 				</div>
-				<input type="text" id="get_adress">
+				<div data-info="">
+					<p>info...</p>
+					<p>Data dodania</p>
+					<p>tag1, tag2, tag3</p>
+				</div>
+				<div data-info="mainInfoWindow" class="active">
+					<h2>Nazwa użytkownika</h2>
+					<p>Miasto</p>
+					<p>Ulica, nr m.</p>
+				</div>
 			</div>
 		</div>
 		<div id="menu">
+			<i data-href="menu" title="Hide menu" class="fa fa-arrow-left "></i>
 			<ul>
 				<li>
 					<img src="apple-touch-icon.png" alt="">
@@ -68,6 +79,7 @@
 
 		<!-- build:js scripts/main.js -->
 		<script src="scripts/main.js"></script>
+		<script src="scripts/app_scripts.js"></script>
 		<!-- endbuild -->
 	</body>
 </html>
