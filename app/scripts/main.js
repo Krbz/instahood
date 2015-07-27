@@ -2,7 +2,7 @@
 var map;
 
 var app = {
-	map: false, //is map drawn
+	  map: false, //is map drawn
     distance: 5000,
     lat: 52.236253,
     lng: 20.958109,
@@ -25,11 +25,11 @@ var app = {
             }]
         });
         google.maps.event.addDomListener(window, "resize", function() {
-            //check rwd 
+            //check rwd
             //console.log('window.size', window.innerWidth);
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
-            map.setCenter(center); 
+            map.setCenter(center);
         });
         //Rysuje radar - 5km
         var draw_radar = new google.maps.Circle({
@@ -49,7 +49,7 @@ var app = {
 
         // google.maps.event.addListener(draw_radar, 'mouseout', function () {
         //     draw_radar.set('editable',false);
-        // }); 
+        // });
         draw_radar.setMap(map);
         //
         if (navigator.geolocation) {
@@ -73,7 +73,7 @@ var app = {
                     content: 'You are here'
                 });
                 pos_marker_infowindow.open(map, pos_marker);
-                setTimeout(function() {
+                setTimeout(function hide_pos_marker_infowindow() {
                     pos_marker_infowindow.close(map, pos_marker);
                 }, 5000)
                 //
@@ -91,7 +91,7 @@ var app = {
                     map.setCenter( {lat:app.lat, lng:app.lng} );
                     //
                     app.getData(event.latLng.lat(), event.latLng.lng())
-                });    
+                });
                 //get new data from instagraam api
                 app.getData(position.coords.latitude, position.coords.longitude);
             }, function() {
@@ -102,10 +102,11 @@ var app = {
             handleNoGeolocation(false);
         }
         function handleNoGeolocation(errorFlag) {
+            var content;
             if (errorFlag) {
-                var content = 'Error: The Geolocation service failed.';
+                content = 'Error: The Geolocation service failed.';
             } else {
-                var content = 'Rats! It looks like your browser does not support Geolocation.';
+                content = 'Rats! It looks like your browser does not support Geolocation.';
             }
             // wez coordsy default'owe lub z wyszukiwarki adresu
             //
@@ -148,7 +149,7 @@ var app = {
             });
         }
         var infowindow = new google.maps.InfoWindow();
-        for (var i = 0; i < callback.length; i++) {  
+        for (var i = 0; i < callback.length; i++) {
             //
             var icon_options = new google.maps.MarkerImage(
                 callback[i].user.profile_picture,
@@ -183,7 +184,7 @@ var app = {
                     directionsDisplay.setMap(null);
                     calcRoute(marker.getPosition().A, marker.getPosition().F);
                     directionsDisplay.setMap(map);
-                    
+
                     var pin_content = '<img class="pin_profile-pic" src='
                     +callback[i].user.profile_picture+
                     '>'+
@@ -191,12 +192,12 @@ var app = {
                     callback[i].user.username
                     +'</p>'
                     +'<a href="'+callback[i].images.standard_resolution.url+'">link</a>';
-                    
+
                     infowindow.setContent(pin_content);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
-        }   
+        }
 	}
 }
 //
