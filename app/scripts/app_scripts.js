@@ -2,6 +2,19 @@
 
 var initializer = {
     init: function(){
+        //check cookies, jezeli sa, #guide.hidden : V
+        if ( window.location.hash ) {
+            if (window.location.hash === '#pl') {
+                document.getElementById('guide').querySelector('div[data-language="pl"]').classList.add('active');
+                document.getElementById('language-change').querySelector('span[data-language="pl"]').classList.add('active');
+            } else {
+                document.getElementById('guide').querySelector('div[data-language="en"]').classList.add('active');
+                document.getElementById('language-change').querySelector('span[data-language="en"]').classList.add('active');
+            }
+        } else {
+            document.getElementById('guide').querySelector('div[data-language="pl"]').classList.add('active');
+            document.getElementById('language-change').querySelector('span[data-language="pl"]').classList.add('active');
+        }
         initializer.buttons();
         initializer.guide();
     },
