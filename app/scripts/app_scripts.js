@@ -2,18 +2,29 @@
 
 var initializer = {
     init: function(){
+        var guide_container = document.getElementById('guide'),
+            language_changer = document.getElementById('language-change');
+
         //check cookies, jezeli sa, #guide.hidden : V
+        var today = new Date();
+
+        // var testObject = { 'one': 1, 'two': 2, 'three': 3 };
+        localStorage.setItem('data', JSON.stringify(testObject) );
+        var retrievedObject = localStorage.getItem('val1');
+
+        console.log('retrievedObject: ', JSON.parse(retrievedObject).two);
+        //
         if ( window.location.hash ) {
             if (window.location.hash === '#pl') {
-                document.getElementById('guide').querySelector('div[data-language="pl"]').classList.add('active');
-                document.getElementById('language-change').querySelector('span[data-language="pl"]').classList.add('active');
+                guide_container.querySelector('div[data-language="pl"]').classList.add('active');
+                language_changer.querySelector('span[data-language="pl"]').classList.add('active');
             } else {
-                document.getElementById('guide').querySelector('div[data-language="en"]').classList.add('active');
-                document.getElementById('language-change').querySelector('span[data-language="en"]').classList.add('active');
+                guide_container.querySelector('div[data-language="en"]').classList.add('active');
+                language_changer.querySelector('span[data-language="en"]').classList.add('active');
             }
         } else {
-            document.getElementById('guide').querySelector('div[data-language="pl"]').classList.add('active');
-            document.getElementById('language-change').querySelector('span[data-language="pl"]').classList.add('active');
+            guide_container.querySelector('div[data-language="pl"]').classList.add('active');
+            language_changer.querySelector('span[data-language="pl"]').classList.add('active');
         }
         initializer.buttons();
         initializer.guide();
