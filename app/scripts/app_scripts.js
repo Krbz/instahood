@@ -62,8 +62,6 @@ var initializer = {
 
                     node.classList.add('hidden');
                     update_step_status();
-                    // node.parentNode.querySelector('div.progress-count').querySelector('span[data-progress-count]').innerHTML = count_all_steps;
-                    //add to this.parent.parent counter if (steps_c/all_steps_c) {guide_container.classList.add('hidden') }
                 });
             }
 
@@ -72,16 +70,25 @@ var initializer = {
         for (var i=0; i < language_changer.length; i++) {
             language_changer[i].addEventListener('click', function() {
 
-                for (var k=0; k<language_changer.length; k++) {
-                    language_changer[k].classList.remove('active');
+                for (var j=0; j<language_changer.length; j++) {
+                    language_changer[j].classList.remove('active');
                 }
                 this.classList.add('active');
 
                 for (var j=0; j<language_containers.length; j++) {
                     language_containers[j].classList.remove('active');
                 }
+                //
+                var tmp_active_lang = guide_container.querySelector('div[data-language="'+this.dataset.language+'"'),
+                    tmp_steps = tmp_active_lang.querySelectorAll('div[data-step]');
+                
+                tmp_active_lang.classList.add('active');
+                
+                for (var j=0; j < tmp_active_lang.querySelectorAll('div[data-step]').length; j++) {
+                    tmp_steps[j].classList.contains('hidden') ? tmp_steps[j].classList.remove('hidden') : null;
+                    update_step_status();
+                }
 
-                guide_container.querySelector('div[data-language="'+this.dataset.language+'"').classList.add('active')
             })
         }
     }
