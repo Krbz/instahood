@@ -2,7 +2,7 @@
 var map;
 
 var app = {
-	  map: false, //is map drawn
+	map: false, //is map drawn
     distance: 5000,
     lat: 52.236253,
     lng: 20.958109,
@@ -79,9 +79,7 @@ var app = {
                             pos_marker_infowindow.close(map, pos_marker);
                         }, 2000);
                         clearInterval(check_guide_class);
-                        console.log('true');
                     } else {
-                        console.log('false');
                         return false;
                     }
                 }, 1000);
@@ -139,9 +137,7 @@ var app = {
                         pos_marker_infowindow.close(map, pos_marker);
                     }, 2000);
                     clearInterval(check_guide_class);
-                    console.log('true');
                 } else {
-                    console.log('false');
                     return false;
                 }
             }, 1000);
@@ -247,6 +243,11 @@ var app = {
                     infowindow.open(map, marker);
                 }
             })(marker, i));
+            google.maps.event.addListener(infowindow, "closeclick", function() {
+                map.setZoom(12);
+                map.setCenter( {lat:app.lat, lng:app.lng} );
+                directionsDisplay.setMap(null);
+            });
         }
 	}
 }
