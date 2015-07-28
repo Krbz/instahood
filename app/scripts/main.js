@@ -73,9 +73,18 @@ var app = {
                     content: 'You are here'
                 });
                 pos_marker_infowindow.open(map, pos_marker);
-                setTimeout(function hide_pos_marker_infowindow() {
-                    pos_marker_infowindow.close(map, pos_marker);
-                }, 5000)
+                var check_guide_class = setInterval(function(){
+                    if ( document.getElementById('guide').classList.contains('hidden') ) {
+                        setTimeout(function hide_pos_marker_infowindow() {
+                            pos_marker_infowindow.close(map, pos_marker);
+                        }, 2000);
+                        clearInterval(check_guide_class);
+                        console.log('true');
+                    } else {
+                        console.log('false');
+                        return false;
+                    }
+                }, 1000);
                 //
                 google.maps.event.addListener(pos_marker, 'dragstart', function(event) {
                     //clear radar
@@ -108,9 +117,50 @@ var app = {
             } else {
                 content = 'Rats! It looks like your browser does not support Geolocation.';
             }
+            alert(content);
             // wez coordsy default'owe lub z wyszukiwarki adresu
             //
             app.getData(app.lat, app.lng);
+            // Marker pozycyjny
+            var pos_marker = new google.maps.Marker({
+                position: new google.maps.LatLng(app.lat, app.lng),
+                zIndex: 99999,
+                animation: google.maps.Animation.DROP,
+                draggable: true
+            });
+            pos_marker.setMap(map)
+            var pos_marker_infowindow = new google.maps.InfoWindow({
+                content: 'You could be here'
+            });
+            pos_marker_infowindow.open(map, pos_marker);
+            var check_guide_class = setInterval(function(){
+                if ( document.getElementById('guide').classList.contains('hidden') ) {
+                    setTimeout(function hide_pos_marker_infowindow() {
+                        pos_marker_infowindow.close(map, pos_marker);
+                    }, 2000);
+                    clearInterval(check_guide_class);
+                    console.log('true');
+                } else {
+                    console.log('false');
+                    return false;
+                }
+            }, 1000);
+            //
+            google.maps.event.addListener(pos_marker, 'dragstart', function(event) {
+                //clear radar
+                draw_radar.setMap(null);
+                pos_marker_infowindow.close(map, pos_marker);
+            });
+            google.maps.event.addListener(pos_marker, 'dragend', function(event) {
+                app.lat = event.latLng.lat();
+                app.lng = event.latLng.lng();
+                draw_radar.setCenter( {lat:app.lat, lng:app.lng} );
+                draw_radar.setMap(map);
+                pos_marker.setPosition( new google.maps.LatLng(app.lat, app.lng) );
+                map.setCenter( {lat:app.lat, lng:app.lng} );
+                //
+                app.getData(event.latLng.lat(), event.latLng.lng())
+            });
         }
     },
     getData: function(posLat, posLng) {
