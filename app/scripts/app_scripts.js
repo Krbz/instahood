@@ -23,11 +23,9 @@ var initializer = {
         var in_menu_toggleMenuBtn = document.querySelector('#menu i[data-href="menu"]');
 
         in_search_toggleMenuBtn.addEventListener('click', function(ev) {
-            console.log('click', this);
             document.getElementById(this.dataset.href).classList.add('active');
         });
         in_menu_toggleMenuBtn.addEventListener('click', function(ev) {
-            console.log('click', this);
             document.getElementById(this.dataset.href).classList.remove('active');
         });
     },
