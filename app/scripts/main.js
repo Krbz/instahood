@@ -25,8 +25,6 @@ var app = {
             }]
         });
         google.maps.event.addDomListener(window, "resize", function() {
-            //check rwd
-            //console.log('window.size', window.innerWidth);
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
@@ -143,7 +141,6 @@ var app = {
             }, 1000);
             //
             google.maps.event.addListener(pos_marker, 'dragstart', function(event) {
-                //clear radar
                 draw_radar.setMap(null);
                 pos_marker_infowindow.close(map, pos_marker);
             });
@@ -213,42 +210,43 @@ var app = {
                 opacity: 0.4,
                 title: callback[i].user.full_name ? callback[i].user.full_name : callback[i].user.username
             });
-            //events:
-            google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
-                return function() {
-                //Zmienia opacity, mouseleave - zeruje na default (0,4 opacity)
-                    console.log('this', this.opacity);
-                }
-            })(marker, i));
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    console.log('marker', callback[i].link);
-                    //obliczanie odleglosci i pokazanie tego nad droga/pinem whateve
-                    //https://developers.google.com/maps/documentation/javascript/examples/distance-matrix
-                    //
-                    //rysowanie drogi
-                    directionsDisplay.setMap(null);
-                    calcRoute(marker.getPosition().A, marker.getPosition().F);
-                    directionsDisplay.setMap(map);
-
-                    var pin_content = '<img class="pin_profile-pic" src='
-                    +callback[i].user.profile_picture+
-                    '>'+
-                    '<p class="pin_profile-name">'+
-                    callback[i].user.username
-                    +'</p>'
-                    +'<a href="'+callback[i].images.standard_resolution.url+'">link</a>';
-
-                    infowindow.setContent(pin_content);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
-            google.maps.event.addListener(infowindow, "closeclick", function() {
-                map.setZoom(12);
-                map.setCenter( {lat:app.lat, lng:app.lng} );
-                directionsDisplay.setMap(null);
-            });
         }
+        //events:
+        google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+            return function() {
+            //Zmienia opacity, mouseleave - zeruje na default (0,4 opacity)
+                console.log('this', this.opacity);
+            }
+        })(marker, i));
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                console.log('marker', callback[i].link);
+                //obliczanie odleglosci i pokazanie tego nad droga/pinem whateve
+                //https://developers.google.com/maps/documentation/javascript/examples/distance-matrix
+                //
+                //rysowanie drogi
+                directionsDisplay.setMap(null);
+                calcRoute(marker.getPosition().A, marker.getPosition().F);
+                directionsDisplay.setMap(map);
+
+                var pin_content = '<img class="pin_profile-pic" src='
+                +callback[i].user.profile_picture+
+                '>'+
+                '<p class="pin_profile-name">'+
+                callback[i].user.username
+                +'</p>'
+                +'<a href="'+callback[i].images.standard_resolution.url+'">link</a>';
+
+                infowindow.setContent(pin_content);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+        google.maps.event.addListener(infowindow, "closeclick", function() {
+            map.setZoom(12);
+            map.setCenter( {lat:app.lat, lng:app.lng} );
+            directionsDisplay.setMap(null);
+        });
+
 	}
 }
 //
@@ -270,3 +268,32 @@ app.init();
 //http://gmap3.net/en/pages/19-demo/
 //https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
 //https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
+
+
+
+
+
+
+
+
+
+
+/*
+mapGeocoder.geocode({'address': place.city + ', ' + place.street }, function(results, status) {
+if (status == google.maps.GeocoderStatus.OK) {
+    latLang = results[0].geometry.location;
+
+    var marker = new google.maps.Marker({
+        map: map,
+        position: latLang
+    });
+
+    if( placesList.length === 1 ){
+        map.setCenter(latLang);
+        map.setZoom(13);
+    } else {
+        bounds.extend(latLang);
+        map.fitBounds(bounds);
+    }
+
+*/
